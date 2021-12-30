@@ -1,0 +1,349 @@
+main()
+Input:
+Giocatori		Insieme di giocatori che partecipano alla partita, dai 3 ai 6 giocatori.			Insieme di giocatori
+n				Numero dei giocatori																Intero
+Output:
+Vincitore		Giocatore che raggiungendo gli obiettivi determinati ad inizio partita,				Giocatore
+				ha vinto la partita.
+Algoritmo:
+vittoria<-0
+giocatori<-assegnazioneColore(giocatori,n)
+giocatori<-assegnazioneArmate(giocatori,n)
+giocatori<-assegnazioneObiettivi(giocatori,n)
+giocatori<-assegnazioneTerritori(giocatori,n)
+territori<-occupazioneTerritori(giocatori,n)
+MENTRE(vittoria=0)
+	i=0
+	MENTRE(i<n)
+		terr<-primaFase(iesimoGiocatore,territori)
+		terr<-secondaFase(iesimoGiocatore)
+		terr<-terzaFase(iesimoGiocatore)
+		SE(contolloObiettivi(iesimoGiocatore)=1)
+			ALLORA vittoria<-1
+		FINE
+	FINE
+	SE(vittoria=1)
+		ALLORA vincitore<-iesimoGiocatore
+	FINE
+	i=i+1
+FINE
+
+assegnazioneColore()
+Input:
+player			Giocatore che sceglie il suo colore.										insieme Giocatori
+n				Numero di giocatori															intero
+Output:
+player			Giocatore con il campo colore aggiornato.									insieme Giocatori
+Algoritmo:
+i=0
+MENTRE(i<n)
+	campoColoreDiIesimoPlayer=leggereInInputIlColore()
+	i=i+1
+FINE
+
+assegnazioneArmate()
+Input:
+players			Giocatori a cui vanno assegnate le armate.									insieme Giocatori
+n				Numero di giocatori															intero
+Output:
+players			Giocatori con il campo Armate aggiornato.									insieme Giocatori
+Algoritmo:
+SE(n=3)
+	ALLORA arm=35
+	ALTRIMENTI 	SE(N=4)
+					ALLORA arm=30
+					ALTRIMENTI	SE(N=5)
+									ALLORA arm=25
+									ALTRIMENTI arm=20
+								FINE
+				FINE
+FINE
+i=0
+MENTRE(i<n)
+	campoArmateDiIesimoPlayer=arm
+	i=i+1
+FINE
+
+assegnazioneObiettivi()
+Input:
+players			Giocatori a cui vanno assegnati gli obiettivi.								insieme Giocatori
+n				Numero di giocatori															intero
+Output:
+players			Giocatori con il campo obiettivi aggiornato.								insieme Giocatori
+Algoritmo:
+i=0
+MENTRE(i<n)
+	campoObiettiviDiiesimoPlayers=pescareCartaObiettivo(i)
+	i=i+1
+FINE
+
+assegnazioneTerritoriAGiocatori()
+Input:
+players			Giocatori a cui vanno assegnati i territori.								insieme Giocatori
+n				Numero di giocatori															intero
+Output:
+players			Giocatori con il campo NumTerrito aggiornato.								insieme Giocatori
+Algoritmo:
+i=0
+j=0
+MENTRE(i<42)
+	SE(j=6)
+		ALLORA j=0
+	FINE
+	campoNumTerritoriDiJesimoPlayers=campoNumTerritoriDiJesimoPlayers+1
+	territori<-assegnazioneGiocatoreATerritori(pescareCartaTerritorio(i),jesimoPlayers)
+	i=i+1
+	j=j+1
+FINE
+
+assegnazioneGiocatoreATerritori()
+Input:
+territ			Territorio a cui verrà assegnato il nome del giocatore occupante			territorio
+player			Giocatore che occupa il territorio											giocatore
+Output:
+territ			Territorio col campo nomeGiocatore aggiornato.								territorio
+Algoritmo:
+campoNomeGiocatoreDiTerr=campoNomeDiPlayer
+
+occupazioneTerritori()
+Input:
+players		insieme dei giocatori che occuperanno i territori con le armate.				insieme di giocatori
+n			numero dei giocatori.															intero
+Output:
+territori		insieme dei territori occupati dalle armate.								insieme dei territori
+Algoritmo:
+i=0
+MENTRE(i<campoArmateDiPlayer1*n)
+	j=0
+	MENTRE(j<n)
+		k=0
+		MENTRE(k<3)
+			terr=scegliereTerritorio(territori)
+			SE(campoNomeGiocatoreDiTerr=campoNomeDiJesimoPlayers)
+				ALLORA campoNumArmateDiTerr=campoNumArmateDiTerr+1
+				k=k+1
+			FINE
+		FINE
+		j=j+1
+	FINE
+	i=i+1
+FINE
+	
+primaFase()
+Input:
+player			Giocatore che sta giocando la prima fase del suo turno						Giocatore
+terr			Insieme dei territori dove verranno aggiunte nuove armate.					Territori
+Output:
+terr			Territori aggiornati con le nuove armate.									Territori
+Algoritmo:
+player<-assegnazioneNuoveArmate(campoNumTerritoriDiIesimoGiocatore/3,player)	
+territori<-occupazioneNuoveArmate(CampoNumTerritotiDiIesimoGiocatore/3)
+j=0
+MENTRE(j<6)
+	SE(campoNomeGiocatoreDiJesimoContinente=campoNomeDiPlayer)
+		ALLORA 	SE(j=0 OR j=2)	//CONTINENTE 0 E 2 SONO OCEANIA E SUD AMERICA
+					ALLORA	player<-assegnazioneNuoveArmate(2,player)	
+							terr<-occupazioneNuoveArmate(2)
+					ALTRIMENTI 	SE(j=1 OR j=3)	//CONTINENTE 1 E 3 SONO EUROPA E NORD AMERICA
+									ALLORA 	player<-assegnazioneNuoveArmate(5,player)	
+											terr<-occupazioneNuoveArmate(5)
+									ALTRIMENTI	SE(j=4)		//CONTINENTE 4 E' AFRICA
+													ALLORA	player<-assegnazioneNuoveArmate(3,player)	
+															terr<-occupazioneNuoveArmate(3)
+													ALTRIMENTI 	player<-assegnazioneNuoveArmate(7,player)	//CONTINENTE 5 E' ASIA
+																terr<-occupazioneNuoveArmate(7)
+												FINE
+								FINE		
+				FINE			
+	FINE
+	j=j+1
+FINE
+
+assegnazioneNuoveArmate()
+Input:
+n			numero armate da assegnare							intero
+player		giocatore a cui verranno assegnate le armate 		giocatore		
+Output:
+player		giocatore col campo Armate aggiornato
+Algoritmo:
+campoArmateDiPlayer<-campoArmateDiPlayer+n
+
+occupazioneNuoveArmate()
+Input:
+numArmate		numero armate da assegnare ad un giocatore						intero
+player			giocatore che che occuperà i territori con le nuove armate.		giocatore
+Output:
+territori		insieme dei territori occupato dalle nuove armate				insieme dei territori
+Algoritmo:
+MENTRE(i<numArmate)
+	terr=scegliereTerritorio(territori)
+	SE(campoNomeGiocatoreDiTerr=campoNomeDiPlayer)
+		ALLORA campoNumArmateDiTerr=campoNumArmateDiTerr+1
+		i=i+1
+	FINE
+FINE
+
+secondaFase()
+Input:
+player			Giocatore che sta giocando la seconda fase del suo turno					Giocatore
+terr			Insieme dei territori dove avverranno i combattimenti.						Territori
+Output:
+continenti 		Territori aggiornati dopo i combattimenti.									Territori
+Algoritmo:
+MENTRE(attaccare(player)=1)
+	territorioAmico<-scegliereTerritorio(terr)
+	territorioNemico<-scegliereTerritorioNemico(terr)
+	SE(campoNomeGiocatoreDiTerritorioAmico=campoNomeDiPlayer && campoNomeGiocatoreDiTerritorioNemico<>campoNomeDiPlayer &&
+	campoNumArmateDiTerritorioAmico>1  && territoriConfinanti(territorioAmico,territorioNemico)=1)
+		ALLORA terr<-attacco(territorioAmico,territorioNemico)
+	FINE
+FINE
+
+attaccare()
+Input:
+player			Giocatore che decide se attaccare o meno.									giocatore
+Output:
+volonta			Valore intero cha vale 1 se il giocatore vuole attaccare, o 0 se			intero
+				non vuole attaccare.
+Algoritmo:
+valore=chiederiInInputAPlayerSeVuoleAttaccare()
+
+scegliereTerritorioAmico()
+Input:
+nomeTerr		Territorio con cui il giocatore vuole attaccare.Chiesto in input			stringa
+				al giocatore.
+Continenti		Insieme dei territori.														Territori
+Output:
+territorioAmico	Il territorio con cui il giocatore vuole attaccare.							Territorio
+Algoritmo:
+nomeTerr<-chiedereInInputAlGiocatoreIlNomeDelTerritorio()
+trovato<-0
+i<-0
+MENTRE(trovato=0 AND i<6)
+	j=0
+	MENTRE(j<campoNumTerritoriDiIesimoContinente)
+		SE(nomeTerr=campoNomeTerritoriodiJesimoTerritorio)
+			ALLORA	territorioAmico<-jesimoTerritorio
+			trovato<-1
+		FINE
+		j<-j+1
+	FINE
+	i=i+1
+FINE
+
+scegliereTerritorioNemico()
+Input:
+nomeTerr			Territorio che il giocatore vuole attaccare.Chiesto in input			stringa
+					al giocatore.
+Continenti			Insieme dei territori.													Territori
+Output:
+territorioNemico	Il territorio cheil giocatore vuole attaccare.							Territorio
+Algoritmo:
+nomeTerr<-chiedereInInputAlGiocatoreIlNomeDelTerritorio()
+trovato<-0
+i<-0
+MENTRE(trovato=0 AND i<6)
+	j=0
+	MENTRE(j<campoNumTerritoriDiIesimoContinente)
+		SE(nomeTerr=campoNomeTerritoriodiJesimoTerritorio)
+			ALLORA	territorioNemico<-jesimoTerritorio
+			trovato<-1
+		FINE
+		j<-j+1
+	FINE
+	i=i+1
+FINE
+
+territoriConfinanti()
+Input:
+territorio1			Confrontare se il territorio1 e confinante con il territorio2			Territorio
+territorio2			Territorio da confrontare col territorio 1.								Territorio
+Output:
+confinanza			Valore intero se impostato a 1, significa che i territori sono			intero
+					confinanti,0 se negativo.
+Algoritmo:
+confinanza<-0
+i<-0
+MENTRE(i<campoNumTerritoriConfinantiDiTerritorioAmico())
+	SE(territorioNemico=iesimoTerritorioDiCampoTerritoriConfinantiDiTerritorioAmico)
+		ALLORA	confinanza<-1
+	FINE
+	i<-i+1
+FINE
+
+attacco()
+Input:
+territorioAmico		Territorio che deve attaccare.				Territorio
+territorioNemico	Territorio che si deve difendere.			Territorio
+Output:
+terr				Territori aggiornati dopo il combattimento.	Territori
+Algoritmo:
+numDadiPlayer1<-chiedereInInputIlNumeroDeiDadi(campoNomeGiocatoreDiTerritorioAmico)
+numDadiPlayer2<-chiedereInInputIlNumeroDeiDadi(campoNomeGiocatoreDiTerritorioNemico)
+SE(numDadiPlayer1>0 AND numDadiPlayer1<4 AND numDadiPlayer1<campoNumArmateDiTerritorioAmico AND numDadiPlayer2>0 AND numDadiPlayer2<4
+numDadiPlayer2<=camponumArmateDiTerritorioNemico)
+	ALLORA	SE(numDadiPlayer1=numDadiPlayer2)
+				ALLORA i=0
+				MENTRE(i<numDadiPlayer1)
+					risultato=lancioNumDadiUguali(i+1)
+					i<-i+1
+					SE(risultato=0)
+						ALLORA	campoNumArmateDiTerritorioAmico<-campoNumArmateDiTerritorioAmico-1
+						ALTRIMENTI campoNumArmateDiTerritorioNemico<-campoNumArmateDiTerritorioNemico-1
+					FINE
+				FINE
+				ALTRIMENTI risultato=lancioNumDadiUgualiDiversi(numDadiPlayer1,numDadiPlayer2)
+			FINE
+FINE
+SE(campoNumArmateDiTerritorioNemico=0)
+	ALLORA terr<-spostamentoArmate(territorioAmico,territorioNemico)
+	campoNomeGiocatoreDiTerritorioNemico=campoNomeGiocatoreDiTerritorioAmico
+FINE
+
+terzaFase()
+Input:
+player			Giocatore che sta giocando la terza fase del suo turno.						Giocatore
+terr			Insieme dei territori dove avverranno gli spostamenti strategici.			Territori
+Output:
+terr			Territori aggiornati dopo gli spostamenti.									Territori
+Algoritmo:
+territorio1<-sceltaTerritorio(terr)
+territorio2<-sceltaTerritorio(terr)
+SE(territoriConfinanti(territorio1,territorio2))
+	terr<-spostamentoArmate(territorio1,territorio2)
+FINE
+
+sceltaTerritorio()
+Input:
+nomeTerr		Nome del territorio chiesto in input al giocatore.							Stringa
+Continenti		Insieme dei territori.														Territori
+Output:
+terr			Il territorio richiesto dal giocatore.										Territorio
+Algoritmo:
+nomeTerr<-chiedereInInputAlGiocatoreIlNomeDelTerritorio()
+trovato<-0
+i<-0
+MENTRE(trovato=0 AND i<6)
+	j=0
+	MENTRE(j<campoNumTerritoriDiIesimoContinente)
+		SE(nomeTerr=campoNomeTerritoriodiJesimoTerritorio)
+			ALLORA	terr<-jesimoTerritorio
+			trovato<-1
+		FINE
+		j<-j+1
+	FINE
+	i=i+1
+FINE
+
+spostamentoArmate()
+Input:
+territorio1		Territorio da cui spostare le armate.										Territorio
+territorio2		Territorio in cui spostare le armate.										Territorio
+Output:
+terr			Territori aggiornati dopo gli spostamenti.									Territori
+Algoritmo:
+numArmate<-chiedereInInputAlGiocatoreIlNumeroDiArmate()
+SE(numArmate>0 AND numArmate<campoNumArmateDiTerritorio1)
+	ALLORA	campoNumArmateDiTerritorio1<-campoNumArmateDiTerritorio1-numArmate
+	campoNumArmateDiTerritorio2<-campoNumArmateDiTerritorio2+numArmate
+FINE

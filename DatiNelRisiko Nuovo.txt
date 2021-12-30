@@ -1,0 +1,37 @@
+Componenti del Risiko:
+Nome							Descrizione
+Giocatore						Possono essere da 3 fino a 6, questi sono caratterizzati da:
+	Colore						Ogni giocatore sceglie il colore della sua armata.
+	Obiettivi					Il mazziere consegna una carta contenente gli obiettivi che quel giocatore deve cercare di
+							conseguire in quella partita.
+	CartePossedute					Carte possedute dal giocatore in un preciso istante.
+	armateDistrutte					Contiene le colore delle armate che il gicatore ha distrutto, se
+							le ha distrutte.
+
+Territorio						Il piano di gioco del Risiko contiene 42 territori, caratterizzati da:
+	ColoreArmate					Colore delle armate del giocatore che possiede quel territorio.
+	NumeroArmate					Numero di armate posizionate su quel territorio.
+	Nome						Nome del territorio.
+	ContinenteDiAppartenenza			Nome del continente che contiene quel territorio.
+	Confini						Territori confinanti con il suddetto territorio.
+
+Continente						
+	NomeContinente					Nome del continente
+	coloreArmate					Nome del giocatore che occupa tutti i territori del continente.
+	numTerritori					Numero dei territori appartenenti a quel continente
+
+Obiettivi
+	DistruggereGiallo				Tutti questi campi sono avvalorati con -1 se non sono obiettivi
+	DistruggereRosso				del giocatore, 0 se sono obiettivi del giocatore
+	DistruggereVerde				
+	DistruggereBlu
+	DistruggereViola
+	DistruggereNero
+	24Territori
+	18Territori2Armate
+	ConquistareEuropaSudAmericaEScelta
+	ConquistareAsiaESudAmerica
+	ConquistareNordAmericaEOceania
+	ConquistareEuropaOceaniaEScelta
+	ConquistareNordAmericaEAfrica
+	ConquistareAsiaEAfrica	

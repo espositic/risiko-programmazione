@@ -1,0 +1,36 @@
+Componenti del Risiko:
+Nome							Descrizione
+Giocatore						Possono essere da 3 fino a 6, questi sono caratterizzati da:
+	Nome						Nome che sceglierà il giocatore durante la partita.
+	Colore						Ogni giocatore sceglie il colore della sua armata.
+	Obiettivi					Il mazziere consegna una carta contenente gli obiettivi che quel giocatore deve cercare di
+								conseguire in quella partita.
+	NumTerritori				Numero dei territori del giocatore.
+	Armate						Armate che il giocatore ha posizionato sui suoi territori in un preciso istante.
+
+Continente						Il planisfero ha 6 continenti
+	NomeContinente				Nome del continente
+	NomeGiocatore				Nome del giocatore che occupa tutti i territori del continente.
+	numTerritori				Numero di territori del continente.
+	Territori					Il planisfero è diviso a sua volta in 42 territori diversi, appartenenti ai 6 continenti.
+		NomeTerritorio			Nome del territorio.
+		NomeGiocatore			Nome del giocatore che occupa quel territorio.
+		NumArmate				Numero di armate presenti su un territorio
+		TerritoriConfinanti		Insieme dei territori confinanti al suddetto territorio.
+		NumTerritoriConfinanti	Numero dei territori confinanti.
+		
+Tipi di armate
+	Carri armati				Un carro armato ha il valore di una sola armata.
+	Bandierina					Una bandierina ha il valore di 10 armate.
+
+Dadi							Nel risiko ci sono 6 dadi, 3 di colore blu e 3 di colore rosso.
+
+Carte Territori					42 carte che rappresentano:
+	Territorio					Uno dei territori presenti sul planisfero
+	Tipologia di arma			Uno delle tre tipologie di armi dell'esercito(fante, cavallo, cannone)
+
+Carte Jolly						2 carte che rappresentano:
+	Tipologia di arma			Tutte e tre le tipologie di armi dell'esercito (fante, cavallo, cannone)
+
+Carte obiettivi					Ogni giocatore riceverà una carta obiettivi, che rappresenterà l'obiettivo di quel giocatore
+								in quella determinata partita.

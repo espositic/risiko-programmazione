@@ -1,0 +1,918 @@
+main()
+Input:
+Giocatori		Insieme di giocatori che partecipano alla partita, dai 3 ai 6 giocatori.			Insieme di giocatori
+n			Numero dei giocatori										Intero
+Territori		Insieme dei territori presenti sul piano di gioco.						Insieme di territori
+Continenti		Insieme dei continenti presenti sul piano di gioco.						Insieme dei continenti
+Output:
+Vincitore		Giocatore che raggiungendo gli obiettivi, determinati ad inizio partita,			Giocatore
+			ha vinto la partita.
+Algoritmo:
+vittoria<-0
+giocatori<-assegnazioneColore(giocatori,n)
+giocatori<-assegnazioneObiettivi(giocatori,n)
+giocatori<-assegnazioneTerritoriAGiocatori(giocatori,n)
+territori<-occupazioneTerritori(giocatori,territori,n)
+MENTRE(vittoria=0)
+	i=0
+	MENTRE(i<n)
+		territori<-primaFase(iesimoGiocatore,territori)
+		territori<-secondaFase(iesimoGiocatore)
+		territori<-terzaFase(iesimoGiocatore)
+		continenti<-controlloContinenti(iesimoGiocatire,territori,continenti)
+		SE(contolloObiettivi(iesimoGiocatore,territori,continenti)=1)
+			ALLORA vittoria<-1
+		FINE
+	FINE
+	SE(vittoria=1)
+		ALLORA vincitore<-iesimoGiocatore
+	FINE
+	i=i+1
+FINE
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+assegnazioneColore()
+Input:
+player			Giocatore che sceglie il suo colore.								insieme Giocatori
+n			Numero di giocatori										intero
+Output:
+player			Giocatore con il campo colore aggiornato.							insieme Giocatori
+Algoritmo:
+i=0
+MENTRE(i<n)
+	campoColoreDiIesimoPlayer=leggereInInputIlColore()
+	i=i+1
+FINE
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+NUMCARTEOBIETTIVI numero delle carte obiettivi definito come costante
+
+assegnazioneObiettivi()
+Input:
+players			Giocatori a cui vanno assegnati gli obiettivi.							insieme Giocatori
+n			Numero di giocatori										intero
+Output:
+players			Giocatori con il campo obiettivi aggiornato.							insieme Giocatori
+Algoritmo:
+i=0
+MENTRE(i<n)
+	campoObiettiviDiiesimoPlayers=pescareCartaObiettivo(numeroRandom(1,NUMCARTEOBIETTIVI))
+	i=i+1
+FINE
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+pescareCartaObiettivo()
+Input:
+n			posizione della carta nel mazzo.								intero
+obiettivi		insieme delle carte obiettivi.									insieme carte obietivi
+Output:
+obiettivo		carta obiettivo in posizione n									carta obiettivo
+Algoritmo
+obiettivo=n-esimaCartaDiObiettivi
+obiettivi=sistemareMazzo(obiettivi,n)
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+CARTANULLA E' L'ULTIMA CARTA DEL MAZZO CHE NON HA VALORE E CI DICE CHE IL MAZZO E' FINITA
+
+sistemareMazzo()
+Input:
+mazzo			insieme di carte generico.									insieme carte generico
+n			posizione della carta da togliere dal mazzo.							intero
+Output:
+mazzo			insieme di carte senza la carta in posizione n							insieme carte generico
+Algoritmo:
+i=n
+MENTRE(i<numCarte(mazzo)-1)
+	iesimaCartaDiMazzo=i+1esimaCartaDiMazzo
+	i=i+1
+FINE
+cartaInPosizioneNumCarte(mazzo)=CARTANULLA
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+CARTANULLA E' L'ULTIMA CARTA DEL MAZZO CHE NON HA VALORE E CI DICE CHE IL MAZZO E' FINITA
+
+numCarte()
+Input:
+mazzo			insieme di carte generico di cui calcolare il numero delle carte.				insieme carte generico
+Output:
+n			numero di carte del mazzo.									intero
+Algoritmo:
+n=0
+MENTRE(nesimaCartaDiMazzo!=CARTANULLA)
+	n=n+i
+FINE
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+numeroRandom()
+Input:
+min			Numero che ci indica l'estremo inferiore da cui generare il numero random.			Intero
+max			Numero che ci indica l'estremo superiore da cui generare il numero random.			Intero
+Output:
+n			Numero compreso tra min e max									Intero
+Algoritmo:
+n=numeroCompresoTraMinEMax
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+assegnazioneTerritoriAGiocatori()
+Input:
+players			Giocatori a cui vanno assegnati i territori.							insieme Giocatori
+n			Numero di giocatori										intero
+Output:
+players			Giocatori con i territori assegnati.								insieme Giocatori
+Algoritmo:
+i=0
+j=0
+MENTRE(i<42)
+	SE(j=6)
+		ALLORA j=0
+	FINE
+	territori<-assegnazioneGiocatoreATerritori(pescareCartaTerritorio(numeroRandom(1,NUMCARTETERRITORIO)),jesimoPlayers)
+	i=i+1
+	j=j+1
+FINE
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+assegnazioneGiocatoreATerritori()
+Input:
+territ			Territorio a cui verrà assegnato il colore del giocatore occupante				territorio
+player			Giocatore che occupa il territorio								giocatore
+Output:
+territ			Territorio col campo coloreArmate aggiornato.							territorio
+Algoritmo:
+campoColoreArmateDiTerrit=campoColoreDiPlayer
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+pescareCartaTerritorio()
+Input:
+n			posizione della carta nel mazzo.								intero
+territori		insieme delle carte territori.									insieme carte territori
+Output:
+territorio		carta territorio in posizione n									carta territorio
+Algoritmo
+territorio=n-esimaCartaDiTerritori
+territori=sistemareMazzo(territori,n)
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+occupazioneTerritori()
+Input:
+players			insieme dei giocatori che occuperanno i territori con le armate.				insieme di giocatori
+territori		insieme dei territori da occupare con le nuove armate.						insieme dei territori
+Algoritmo:
+n			numero dei giocatori.										intero
+Output:
+territori		insieme dei territori occupati dalle armate.							insieme dei territori
+Algoritmo:
+i=0
+arm=calcoloNumArmate(n)
+MENTRE(i<arm*n)
+	j=0
+	MENTRE(j<n)
+		k=0
+		MENTRE(k<3)
+			terr=scegliereTerritorio(territori)
+			SE(campoColoreArmateDiTerr=campoColoreDiJesimoPlayers)
+				ALLORA campoNumArmateDiTerr=campoNumArmateDiTerr+1
+				k=k+1
+			FINE
+		FINE
+		j=j+1
+	FINE
+	i=i+1
+FINE
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+calcoloNumArmate()
+Input:
+n			Numero di giocatori										intero
+Output:
+arm			Numero di armate da assegnare agli n giocatori							intero
+Algoritmo:
+SE(n=3)
+	ALLORA arm=35
+	ALTRIMENTI 	SE(N=4)
+					ALLORA arm=30
+					ALTRIMENTI	SE(N=5)
+									ALLORA arm=25
+									ALTRIMENTI arm=20
+								FINE
+				FINE
+FINE
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+primaFase()
+Input:
+player			Giocatore che sta giocando la prima fase del suo turno						Giocatore
+terr			Insieme dei territori dove verranno aggiunte nuove armate.					Territori
+continenti		Insieme dei continenti
+Output:
+terr			Territori aggiornati con le nuove armate.							Territori
+Algoritmo:	
+terr=occupazioneNuoveArmate(calcoloNumTerritori(terr,player)/3,terr,player)
+j=0
+MENTRE(j<6)
+	SE(campoNomeGiocatoreDiJesimoContinente=campoNomeDiPlayer)
+		ALLORA 	SE(j=0 OR j=2)	//CONTINENTE 0 E 2 SONO OCEANIA E SUD AMERICA
+					ALLORA	terr<-occupazioneNuoveArmate(2,terr,player)
+					ALTRIMENTI 	SE(j=1 OR j=3)	//CONTINENTE 1 E 3 SONO EUROPA E NORD AMERICA
+									ALLORA 	terr<-occupazioneNuoveArmate(5,terr,player)
+									ALTRIMENTI	SE(j=4)		//CONTINENTE 4 E' AFRICA
+													ALLORA	terr<-occupazioneNuoveArmate(3,terr,player)
+													ALTRIMENTI terr<-occupazioneNuoveArmate(7,terr,player)
+												FINE
+								FINE		
+				FINE			
+	FINE
+	j=j+1
+FINE
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+calcoloNumTerritori()
+Input:
+giocatore		Giocatore di cui calcoleremo il numero di territori posseduti					Giocatore
+terr			Insieme dei territori dove andremo a calcolare i territori posseduti da giocatore		insieme di territori
+Output:
+n			Numero dei territori di giocatore								Intero
+Algoritmo:
+n=0
+i=0
+MENTRE(i<42)
+	SE(campoColoreArmateDiIesimoTerritorioDiTerr=campoColoreDiGiocatore)
+		ALLORA n=n+1
+	FINE 
+	i=i+1
+FINE
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+occupazioneNuoveArmate()
+Input:
+numArmate		numero armate da assegnare ad un giocatore							intero
+terr			Insieme dei territori da occupare								insieme di territori
+player			giocatore che che occuperà i territori con le nuove armate.					giocatore
+Output:
+terr			insieme dei territori occupato dalle nuove armate						insieme dei territori
+Algoritmo:
+MENTRE(i<numArmate)
+	terr=scegliereTerritorio(territori)
+	SE(campoColoreArmateDiTerr=campoColoreDiPlayer)
+		ALLORA campoNumArmateDiTerr=campoNumArmateDiTerr+1
+		i=i+1
+	FINE
+FINE
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+scegliereTerritorio()
+Input:
+nomeTerr		Nome del territorio chiesto in input al giocatore.						Stringa
+territori		Insieme dei territori.										insieme territori
+player	 		Giocatore che sta scegliendo il territorio nemico.						Giocatore
+Output:
+territorio		Il territorio scelto dal giocatore in input.							Territorio
+Algoritmo:
+nomeTerr<-chiedereInInputAlGiocatoreIlNomeDelTerritorio()
+trovato<-0
+i<-0
+MENTRE(trovato=0 AND i<6)
+	j=0
+	MENTRE(j<campoNumTerritoriDiIesimoContinente)
+		SE(nomeTerr=campoNomeTerritoriodiJesimoTerritorio AND campoColoreArmateDiJesimoTerritorio=campoColoreDiPlayer)
+			ALLORA	territorio<-jesimoTerritorio
+			trovato<-1
+		FINE
+		j<-j+1
+	FINE
+	i=i+1
+FINE
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+secondaFase()
+Input:
+player			Giocatore che sta giocando la seconda fase del suo turno					Giocatore
+terr			Insieme dei territori dove avverranno i combattimenti.						Territori
+Output:
+continenti 		Territori aggiornati dopo i combattimenti.							Territori
+Algoritmo:
+MENTRE(attaccare(player)=1)
+	territorioAmico<-scegliereTerritorio(terr)
+	territorioNemico<-scegliereTerritorioNemico(terr)
+	SE(campoNomeGiocatoreDiTerritorioAmico=campoNomeDiPlayer && campoNomeGiocatoreDiTerritorioNemico<>campoNomeDiPlayer &&
+	campoNumArmateDiTerritorioAmico>1  && territoriConfinanti(territorioAmico,territorioNemico)=1)
+		ALLORA terr<-attacco(territorioAmico,territorioNemico)
+	FINE
+FINE
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+attaccare()
+Input:
+player			Giocatore che decide se attaccare o meno.							giocatore
+Output:
+volonta			Valore intero cha vale 1 se il giocatore vuole attaccare, o 0 se				intero
+			non vuole attaccare.
+Algoritmo:
+valore=chiederiInInputAPlayerSeVuoleAttaccare()
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+scegliereTerritorioAmico()
+Input:
+nomeTerr		Territorio con cui il giocatore vuole attaccare.Chiesto in input				stringa
+			al giocatore.
+territori		Insieme dei territori.										insieme territori
+player	 		Giocatore che sta scegliendo il territorio amico.						Giocatore
+Output:
+territorioAmico	Il territorio con cui il giocatore vuole attaccare.							Territorio
+Algoritmo:
+nomeTerr<-chiedereInInputAlGiocatoreIlNomeDelTerritorio()
+trovato<-0
+i<-0
+MENTRE(trovato=0 AND i<6)
+	j=0
+	MENTRE(j<campoNumTerritoriDiIesimoContinente)
+		SE(nomeTerr=campoNomeTerritoriodiJesimoTerritorio AND campoColoreArmateDiJesimoTerritorio=campoColoreDiPlayer)
+			ALLORA	territorioAmico<-jesimoTerritorio
+			trovato<-1
+		FINE
+		j<-j+1
+	FINE
+	i=i+1
+FINE
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+scegliereTerritorioNemico()
+Input:
+nomeTerr		Territorio che il giocatore vuole attaccare.Chiesto in input					stringa
+			al giocatore.
+territori		Insieme dei territori.										insieme territori
+player	 		Giocatore che sta scegliendo il territorio nemico.						Giocatore
+Output:
+territorioNemico	Il territorio cheil giocatore vuole attaccare.							Territorio
+Algoritmo:
+nomeTerr<-chiedereInInputAlGiocatoreIlNomeDelTerritorio()
+trovato<-0
+i<-0
+MENTRE(trovato=0 AND i<6)
+	j=0
+	MENTRE(j<campoNumTerritoriDiIesimoContinente)
+		SE(nomeTerr=campoNomeTerritoriodiJesimoTerritorio AND campoColoreArmateDiJesimoTerritorio!=campoColoreDiPlayer)
+			ALLORA	territorioNemico<-jesimoTerritorio
+			trovato<-1
+		FINE
+		j<-j+1
+	FINE
+	i=i+1
+FINE
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+territoriConfinanti()
+Input:
+territorio1			Confrontare se il territorio1 e confinante con il territorio2				Territorio
+territorio2			Territorio da confrontare col territorio 1.						Territorio
+Output:
+confinanza			Valore intero se impostato a 1, significa che i territori sono				intero
+				confinanti,0 se negativo.
+Algoritmo:
+confinanza<-0
+i<-0
+MENTRE(i<campoNumTerritoriConfinantiDiTerritorioAmico())
+	SE(territorioNemico=iesimoTerritorioDiCampoTerritoriConfinantiDiTerritorioAmico)
+		ALLORA	confinanza<-1
+	FINE
+	i<-i+1
+FINE
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+attacco()
+Input:
+territorioAmico			Territorio che deve attaccare.								Territorio
+territorioNemico		Territorio che si deve difendere.							Territorio
+Output:
+terr				Territori aggiornati dopo il combattimento.						insieme territori
+Algoritmo:
+numDadiPlayer1<-chiedereInInputIlNumeroDeiDadi(campoColoreArmateDiTerritorioAmico)
+numDadiPlayer2<-chiedereInInputIlNumeroDeiDadi(campoColoreArmateDiTerritorioNemico)
+SE(numDadiPlayer1>0 AND numDadiPlayer1<4 AND numDadiPlayer1<campoNumArmateDiTerritorioAmico AND numDadiPlayer2>0 AND numDadiPlayer2<4
+AND numDadiPlayer2<=camponumArmateDiTerritorioNemico)
+	ALLORA	SE(numDadiPlayer1=numDadiPlayer2)
+			ALLORA i=0
+				MENTRE(i<numDadiPlayer1)	
+					iesimaPosizioneDirisultatiLancioPlayer1=numeroRandom(1,6)
+					i=i+1
+				FINE
+				MENTRE(i<numDadiPlayer2)	
+					iesimaPosizioneDirisultatiLancioPlayer2=numeroRandom(1,6)
+					i=i+1
+				FINE
+				risultatiLancioPlayer1=ordinare(risultatiLancioPlayer1,numDadiPlayer1)
+				risultatiLancioPlayer2=ordinare(risultatiLancioPlayer2,numDadiPlayer2)
+				SE(numDadiPlayer1<=numDadiPlayer2)
+					ALLORA i=0
+						MENTRE(i<numDadiPlayer1)
+							risultato=confrontoDadi(iesimaPosizioneDiRisultatiLancioPlayer1,iesimaPosizioneDiRisultatiLancioPlayer2)
+							SE(risultato<=0)
+								ALLORA campoNumArmateDiTerritorioAmico=campoNumArmateDiTerritorioAmico-1
+								ALTRIMENTI campoNumArmateDiTerritorioNemico=campoNumArmateDiTerritorioNemico-1
+							FINE
+							i=i+1
+						FINE
+					ALTRIMENTI i=0
+						MENTRE(i<numDadiPlayer2)
+							risultato=confrontoDadi(iesimaPosizioneDiRisultatiLancioPlayer1,iesimaPosizioneDiRisultatiLancioPlayer2)
+							SE(risultato<=0)
+								ALLORA campoNumArmateDiTerritorioAmico=campoNumArmateDiTerritorioAmico-1
+								ALTRIMENTI campoNumArmateDiTerritorioNemico=campoNumArmateDiTerritorioNemico-1
+							FINE
+							i=i+1
+						FINE
+				FINE
+		FINE
+FINE
+SE(campoNumeroArmateDiTerritorioNemico=0)
+	ALLORA terr<-spostamentoArmate(territorioAmico,territorioNemico)
+		SE(ultimoTerritorio(player2,terr)=1)
+			ALLORA aggiungiArmataDistrutta(player1,campoColoreDiPlayer2)
+		FINE
+		campoColoreArmateDiTerritorioNemico=campoColoreArmateDiTerritorioAmico
+FINE
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+ultimoTerritorio()
+Input:
+player			Giocatore di cui controlleremo se ha solo un territorio.					giocatore
+territori		insieme dei territori su cui controlleremo i possedimenti di player.				Insieme di territori
+Output:
+risultato		Intero avvalorato con 0 se controlla più di un territorio, 1 in caso contrario.			Intero
+Algoritmo:
+i=0
+territoriPosseduti=0
+obiettivo=1
+MENTRE(i<42 AND obiettivo=1)
+	SE(campoColoreDiPlayer=campoColoreArmateDiIesimoTerritorioDiTerritori)
+		ALLORA territoriPosseduti=territoriPosseduti+1
+	FINE
+	SE(territoriPosseduti>1)
+		ALLORA obiettivo=0
+	FINE
+	i=i+1
+FINE
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+COLORESENTINELLA E' UN DATO CHE CI PERMETTE DI CAPIRE QUANDO FINISCE IL VETTORE CONTENENTE I COLORI DELLE ARMATE DISTRUTTE DA UN GIOCATORE
+
+aggiungiArmateDistrutta()
+Input:
+player			Giocatore a cui aggiungeremo il campo armate distrutte il colore di quella che ha 		giocatore
+			appenaDistrutto.
+colore			colore dell'armata appena distrutta.								Stringa
+Output:
+player			Giocatore con il campo armateDistrutte aggiornato.						giocatore
+Algoritmo:
+i=0
+MENTRE(iesimoColoreDiArmateDistrutte!=COLORESENTINELLA)
+	i=i+1
+FINE
+iesimoColoreDiArmateDistrutte=colore
+i+1esimoColoreDiArmateDistrutte=COLORESENTINELLA
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+ordinare()
+Input:
+vett			vettore di interi da ordinare.								vettore di interi
+n			numero di interi nel vettore compreso tra 1 e 3.					intero
+Outpur:
+vett			vettore dato in input ma con gli elementi al suo intero in ordine			vettore di intero
+Algoritmo:
+i=0
+MENTRE(i<=n-2)
+	maggiore=i
+	j=i+1
+	MENTRE(j<=n-1)
+		SE(interoInPosizioneJDiVett>interoInPosizioneMaggioreDiVett)
+			ALLORA maggiore=j
+		FINE
+		j=j+1
+	FINE
+	temp=interoInPosizioneIDiVett
+	interoInPosizioneIDiVett=interoInPosizioneMaggioreDiVett
+	interoInPosizioneMaggioreDiVett=temp
+	i=i+1
+FINE
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+confrontoDadi()
+Input:
+Dado1				Numero intero compreso tra 1 e 6.							intero
+Dadi2				Numero intero compreso tra 1 e 6.							intero
+Output:
+risultato			Valore intero che vale 1 se Dado1 è maggiore di Dado2, 0				intero
+				se uguali, -1 se minore.					
+Algoritmo:
+SE(Dado1=Dado2)
+	ALLORA risultato=0
+	ALTRIMENTI 	SE(Dado1>Dado2)
+				ALLORA risultato=1
+				ALTRIMENTI risultato=-1
+			FINE
+FINE
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+terzaFase()
+Input:
+player			Giocatore che sta giocando la terza fase del suo turno.					Giocatore
+terr			Insieme dei territori dove avverranno gli spostamenti strategici.			Territori
+Output:
+terr			Territori aggiornati dopo gli spostamenti.						Territori
+Algoritmo:
+territorio1<-sceltaTerritorio(terr)
+territorio2<-sceltaTerritorio(terr)
+SE(territoriConfinanti(territorio1,territorio2))
+	terr<-spostamentoArmate(territorio1,territorio2)
+FINE
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+sceltaTerritorio()
+Input:
+nomeTerr		Nome del territorio chiesto in input al giocatore.					Stringa
+Continenti		Insieme dei territori.									Territori
+Output:
+terr			Il territorio richiesto dal giocatore.							Territorio
+Algoritmo:
+nomeTerr<-chiedereInInputAlGiocatoreIlNomeDelTerritorio()
+trovato<-0
+i<-0
+MENTRE(trovato=0 AND i<6)
+	j=0
+	MENTRE(j<campoNumTerritoriDiIesimoContinente)
+		SE(nomeTerr=campoNomeTerritoriodiJesimoTerritorio)
+			ALLORA	terr<-jesimoTerritorio
+			trovato<-1
+		FINE
+		j<-j+1
+	FINE
+	i=i+1
+FINE
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+spostamentoArmate()
+Input:
+territorio1		Territorio da cui spostare le armate.								Territorio
+territorio2		Territorio in cui spostare le armate.								Territorio
+Output:
+terr			Territori aggiornati dopo gli spostamenti.							Territori
+Algoritmo:
+numArmate<-chiedereInInputAlGiocatoreIlNumeroDiArmate()
+SE(numArmate>0 AND numArmate<campoNumArmateDiTerritorio1)
+	ALLORA	campoNumArmateDiTerritorio1<-campoNumArmateDiTerritorio1-numArmate
+		campoNumArmateDiTerritorio2<-campoNumArmateDiTerritorio2+numArmate
+FINE
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+controlloContinenti()
+Input:
+player			giocatore di cui controlleremo se possiede i continenti						Giocatore
+terr			insieme dei territori su cui faremo dei controlli.						insieme dei territori
+cont 			insieme dei continenti per vedere se sono posseduti da qualcuno.				insieme dei continenti
+Output:	
+cont 			insieme dei continenti aggiornato dopo i controlli.						insieme dei continenti
+Algoritmo:
+i=0
+MENTRE(i<6)
+	j=0
+	k=0
+	MENTRE(j<numTerritoriDiIesimoContinente AND j=k)
+		SE(campoContinenteDiAppartenenzajesimoTerritorioDiTerr=campoNomeDiIesimoContinente)
+			ALLORA 	SE(campoColoreArmateDiJesimoTerritorioDiTerr=campoColoreDiPlayer)
+					ALLORA k=k+1
+				FINE
+				j=j+1
+		FINE
+	SE(j=k)
+		ALLORA campoColoreArmateDiIesimoContinente=campoColoreDiPlayer
+	FINE
+	i=i+1
+FINE
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+controlloObiettivi()
+Input:
+player			Giocatore di cui controlleremo gli Obiettivi							Intero
+territori		insieme dei territori usati per controllare gli obiettivi.					Insieme dei territori
+continenti		insieme dei continenti usato per controllare gli obiettivi.					Insieme dei continenti
+Output:
+obiettivi		Numero intero avvalorato di 0 se gli obiettivi non sono stati raggiunti,1 in caso		Intero
+			contrario.
+Algoritmo:
+obiettivi=1
+SE(campoDistruggereGialloDiObiettiviDiPlayer=0)
+	ALLORA obiettivi=controlloArmateGialle(player,obiettivi)
+FINE
+SE(campoDistruggereRossoDiObiettiviDiPlayer=0)
+	ALLORA obiettivi=controlloArmateRosse(player,obiettivi)
+FINE
+SE(campoDistruggereVerdeDiObiettiviDiPlayer=0)
+	ALLORA obiettivi=controlloArmateVerde(player,obiettivi)
+FINE
+SE(campoDistruggereBluDiObiettiviDiPlayer=0)
+	ALLORA obiettivi=controlloArmateBlu(player,obiettivi)
+FINE
+SE(campoDistruggereViolaDiObiettiviDiPlayer=0)
+	ALLORA obiettivi=controlloArmateViola(player,obiettivi)
+FINE
+SE(campoDistruggereNeroDiObiettiviDiPlayer=0)
+	ALLORA obiettivi=controlloArmateNere(player,obiettivi)
+FINE
+SE(campo24TerritoriDiObiettiviDiPlayer=0)
+	ALLORA obiettivi=controllo24Territori(player,terr,obiettivi)
+FINE
+SE(campo18Territori2ArmateDiObiettiviDiPlayer=0)
+	ALLORA obiettivi=controllo18Territori2Armate(player,terr,obiettivi)
+FINE
+SE(campoConquistareEuropaSudAmericaESceltaDiObiettiviDiPlayer=0)
+	ALLORA obiettivi=controlloEuropaSudAmericaEScelta(player,terr,obiettivi)
+FINE
+SE(campoConquistareAsiaESudAmericaDiObiettiviDiPlayer=0)
+	ALLORA obiettivi=controlloaAsiaESudAmerica(player,terr,obiettivi)
+FINE
+SE(campoConquistareNordAmericaEOceaniaDiObiettiviDiPlayer=0)
+	ALLORA obiettivi=controlloNordAmericaEOceania(player,terr,obiettivi)
+FINE
+SE(campoConquistareEuropaOceaniaESceltaDiObiettiviDiPlayer=0)
+	ALLORA obiettivi=controlloEuropaOceaniaEScelta(player,terr,obiettivi)
+FINE
+SE(campoConquistareNordAmericaEAfricaDiObiettiviDiPlayer=0)
+	ALLORA obiettivi=controlloNordAmericaEAfrica(player,terr,obiettivi)
+FINE
+SE(campoConquistareAsiaEAfricaDiObiettiviDiPlayer=0)
+	ALLORA obiettivi=controlloAsiaEAfrica(player,terr,obiettivi)
+FINE
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+controlloArmateGialle()
+Input:
+player			Giocatore di cui controlleremo se ha distrutto le armate Gialle.				Giocatore
+obiettivo		Numero intero avvalorato di 0 se l'obiettivo è stato raggiunto,1 in caso			Intero
+			contrario.
+Output:
+obiettivo		Numero intero cambiato in 0 se l'obiettivo non è stato raggiunto.				Intero
+Algoritmo:
+SE(controlloColoriDistrutti(player,'giallo')=0)
+	ALLORA obiettivo=0
+FINE
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+COLORESENTINELLA E' UN DATO CHE CI PERMETTE DI CAPIRE QUANDO FINISCE IL VETTORE CONTENENTE I COLORI DELLE ARMATE DISTRUTTE DA UN GIOCATORE
+
+controlloColoriDistrutti()
+Input:
+player			Giocatore di cui controlleremo se ha distrutto le armate del colore dato in input.		Giocatore
+colore			Colore che ci interessa controllare nelle armate distrutte.					Stringa
+Output:
+risultato		Intero che vale 0 se il giocatore non ha distrutto l'armata di quel colore,1 in			Intero
+			caso contrario.
+Algoritmo:
+risultato=0
+i=0
+MENTRE(iesimoColoreDicampoArmateDistrutte!=COLORESENTINELLA AND risultato=0)
+	SE(iesimoColoreDiCampoArmateDistrutte=colore)
+		ALLORA risultato=1
+			i=i+1
+	FINE
+FINE
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+controlloArmateRosse()
+Input:
+player			Giocatore di cui controlleremo se ha distrutto le armate Rosse.					Giocatore
+obiettivo		Numero intero avvalorato di 0 se l'obiettivo è stato raggiunto,1 in caso			Intero
+			contrario.
+Output:
+obiettivo		Numero intero cambiato in 0 se l'obiettivo non è stato raggiunto.				Intero
+Algoritmo:
+SE(controlloColoriDistrutti(player,'rosse')=0)
+	ALLORA obiettivo=0
+FINE
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+controlloArmateVerde()
+Input:
+player			Giocatore di cui controlleremo se ha distrutto le armate Verdi.					Giocatore
+obiettivo		Numero intero avvalorato di 0 se l'obiettivo è stato raggiunto,1 in caso			Intero
+			contrario.
+Output:
+obiettivo		Numero intero cambiato in 0 se l'obiettivo non è stato raggiunto.				Intero
+Algoritmo:
+SE(controlloColoriDistrutti(player,'verde')=0)
+	ALLORA obiettivo=0
+FINE
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+controlloArmateBlu()
+Input:
+player			Giocatore di cui controlleremo se ha distrutto le armate Blu.					Giocatore
+obiettivo		Numero intero avvalorato di 0 se l'obiettivo è stato raggiunto,1 in caso			Intero
+			contrario.
+Output:
+obiettivo		Numero intero cambiato in 0 se l'obiettivo non è stato raggiunto.				Intero
+Algoritmo:
+SE(controlloColoriDistrutti(player,'blu')=0)
+	ALLORA obiettivo=0
+FINE
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+controlloArmateViola()
+Input:
+player			Giocatore di cui controlleremo se ha distrutto le armate Viola.					Giocatore
+obiettivo		Numero intero avvalorato di 0 se l'obiettivo è stato raggiunto,1 in caso			Intero
+			contrario.
+Output:
+obiettivo		Numero intero cambiato in 0 se l'obiettivo non è stato raggiunto.				Intero
+Algoritmo:
+SE(controlloColoriDistrutti(player,'viola')=0)
+	ALLORA obiettivo=0
+FINE
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+controlloArmateNere()
+Input:
+player			Giocatore di cui controlleremo se ha distrutto le armate Nere.					Giocatore
+obiettivo		Numero intero avvalorato di 0 se l'obiettivo è stato raggiunto,1 in caso			Intero
+			contrario.
+Output:
+obiettivo		Numero intero cambiato in 0 se l'obiettivo non è stato raggiunto.				Intero
+Algoritmo:
+SE(controlloColoriDistrutti(player,'nere')=0)
+	ALLORA obiettivo=0
+FINE
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+controllo24Territori()
+Input:
+player			Giocatore di cui controlleremo se controlla 24 territori.					Giocatore
+territori		insieme dei territori usati per controllare gli obiettivi.					Insieme dei territori
+obiettivo		Numero intero avvalorato di 0 se l'obiettivo è stato raggiunto,1 in caso			Intero
+			contrario.
+Output:
+obiettivo		Numero intero cambiato in 0 se l'obiettivo non è stato raggiunto.				Intero
+Algoritmo:
+i=0
+numTerritoriPosseduti=0
+obiettivo=0
+MENTRE(i<42 AND obiettivo=0)
+	SE(campoColoreArmateDiIesimoTerritorioDiTerritori=campoColoreDiPlayer)
+		ALLORA numTerritoriPosseduti=numTerritoriPosseduti+1
+	FINE
+	SE(numTerritoriPosseduti>23)
+		ALLORA obiettivo=1
+	FINE
+	i=i+1
+FINE
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+controllo18Territori2Armate()
+Input:
+player			Giocatore di cui controlleremo se controlla 18 territori con almeno due armate.			Giocatore
+territori		insieme dei territori usati per controllare gli obiettivi.					Insieme dei territori
+obiettivo		Numero intero avvalorato di 0 se l'obiettivo è stato raggiunto,1 in caso			Intero
+			contrario.
+Output:
+obiettivo		Numero intero cambiato in 0 se l'obiettivo non è stato raggiunto.				Intero
+Algoritmo:
+i=0
+numTerritoriPossedutiCon2Armate=0
+obiettivo=0
+MENTRE(i<42 AND obiettivo=0)
+	SE(campoColoreArmateDiIesimoTerritorioDiTerritori=campoColoreDiPlayer AND campoNumArmateDiIesimoTerritorioDiTerritori>=2)
+		ALLORA numTerritoriPossedutiCon2Armate=numTerritoriPossedutiCon2Armate+1
+	FINE
+	SE(numTerritoriPossedutiCon2armate>17)
+		ALLORA obiettivo=1
+	FINE
+	i=i+1
+FINE
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+controlloEuropaSudAmericaEScelta()
+Input:
+player 		Giocatore di cui andremo a vedere se controlla l'Europa, il Sud America e un'altro continente.		Giocatore
+continenti	Insieme dei continenti da esaminare.									Insieme dei continenti
+obiettivo	Numero intero avvalorato di 0 se l'obiettivo è stato raggiunto,1 in caso				Intero
+		contrario.
+Output:
+obiettivo	Numero intero cambiato in 0 se l'obiettivo non è stato raggiunto.					Intero
+Algoritmo:
+SE(!(campoColoreGiocatoreDiContinenteEuropa=campoColoreDiPlayer AND campoColoreGiocatoreDiContinenteSudAmerica=campoColoreDiPlayer AND (
+campoColoreGiocatoreDiContinenteNordAmerica=campoColoreDiPlayer OR campoColoreGiocatoreDiContinenteAsia=campoColoreDiPlayer OR 
+campoColoreGiocatoreDiContinenteOceania=campoColoreDiPlayer OR campoColoreGiocatoreDiContinenteAfrica=campoColoreDiPlayer)))
+	ALLORA obiettivo=0
+FINE
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+controlloaAsiaESudAmerica()
+Input:
+player 		Giocatore di cui andremo a vedere se controlla l'Asia e il Sud America 					Giocatore
+continenti	Insieme dei continenti da esaminare.									Insieme dei continenti
+obiettivo	Numero intero avvalorato di 0 se l'obiettivo è stato raggiunto,1 in caso				Intero
+		contrario.
+Output:
+obiettivo	Numero intero cambiato in 0 se l'obiettivo non è stato raggiunto.					Intero
+Algoritmo:
+SE(!(campoColoreGiocatoreDiContinenteAsia=campoColoreDiPlayer AND campoColoreGiocatoreDiContinenteSudAmerica=campoColoreDiPlayer))
+	ALLORA obiettivo=0
+FINE
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+controlloNordAmericaEOceania()
+player 		Giocatore di cui andremo a vedere se controlla il Nord America e l'Oceania 				Giocatore
+continenti	Insieme dei continenti da esaminare.									Insieme dei continenti
+obiettivo	Numero intero avvalorato di 0 se l'obiettivo è stato raggiunto,1 in caso				Intero
+		contrario.
+Output:
+obiettivo	Numero intero cambiato in 0 se l'obiettivo non è stato raggiunto.					Intero
+Algoritmo:
+SE(!(campoColoreGiocatoreDiContinenteOceania=campoColoreDiPlayer AND campoColoreGiocatoreDiContinenteNordAmerica=campoColoreDiPlayer))
+	ALLORA obiettivo=0
+FINE
+
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+controlloEuropaOceaniaEScelta()
+Input:
+player 		Giocatore di cui andremo a vedere se controlla l'Europa, l'Oceania e un'altro continente.		Giocatore
+continenti	Insieme dei continenti da esaminare.									Insieme dei continenti
+obiettivo	Numero intero avvalorato di 0 se l'obiettivo è stato raggiunto,1 in caso				Intero
+		contrario.
+Output:
+obiettivo	Numero intero cambiato in 0 se l'obiettivo non è stato raggiunto.					Intero
+Algoritmo:
+SE(!(campoColoreGiocatoreDiContinenteEuropa=campoColoreDiPlayer AND campoColoreGiocatoreDiContinenteOceania=campoColoreDiPlayer AND (
+campoColoreGiocatoreDiContinenteNordAmerica=campoColoreDiPlayer OR campoColoreGiocatoreDiContinenteAsia=campoColoreDiPlayer OR 
+campoColoreGiocatoreDiContinenteSudAmerica=campoColoreDiPlayer OR campoColoreGiocatoreDiContinenteAfrica=campoColoreDiPlayer)))
+	ALLORA obiettivo=0
+FINE
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+controlloNordAmericaEAfrica()
+player 		Giocatore di cui andremo a vedere se controlla il Nord America e l'Africa 				Giocatore
+continenti	Insieme dei continenti da esaminare.									Insieme dei continenti
+obiettivo	Numero intero avvalorato di 0 se l'obiettivo è stato raggiunto,1 in caso				Intero
+		contrario.
+Output:
+obiettivo	Numero intero cambiato in 0 se l'obiettivo non è stato raggiunto.					Intero
+Algoritmo:
+SE(!(campoColoreGiocatoreDiContinenteAfrica=campoColoreDiPlayer AND campoColoreGiocatoreDiContinenteNordAmerica=campoColoreDiPlayer))
+	ALLORA obiettivo=0
+FINE
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+controlloAsiaEAfrica()
+player 		Giocatore di cui andremo a vedere se controlla l'Asia e l'Africa	 				Giocatore
+continenti	Insieme dei continenti da esaminare.									Insieme dei continenti
+obiettivo	Numero intero avvalorato di 0 se l'obiettivo è stato raggiunto,1 in caso				Intero
+		contrario.
+Output:
+obiettivo	Numero intero cambiato in 0 se l'obiettivo non è stato raggiunto.					Intero
+Algoritmo:
+SE(!(campoColoreGiocatoreDiContinenteAsia=campoColoreDiPlayer AND campoColoreGiocatoreDiContinenteAfrica=campoColoreDiPlayer))
+	ALLORA obiettivo=0
+FINE
